@@ -78,7 +78,7 @@
       const format = document.getElementById('format').value;
       const rawLink = document.getElementById('link').value.trim();
       const encoded = btoa(rawLink);
-      const domain = 'https://www.nontonyuk.xyz/p/index.html';
+      const domain = 'https://nontonyuk.github.io/player/index.html';
       const url = `${domain}?player=${player}&provider=${provider}&format=${encodeURIComponent(format)}&link=${encoded}`;
       const iframeCode = `<iframe src="${url}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>`;
       document.getElementById('embedOutput').value = iframeCode;
