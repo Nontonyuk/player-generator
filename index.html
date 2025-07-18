@@ -19,6 +19,13 @@
       border: 1px solid #444;
       color: #fff;
     }
+    button.copy {
+      background: #2c3e50;
+      cursor: pointer;
+    }
+    button.copy:hover {
+      background: #34495e;
+    }
     textarea {
       height: 150px;
     }
@@ -62,48 +69,66 @@
     </form>
   </div>
   
-     <h3>Tambahan: Poster & Iklan</h3>
-<input type="text" id="poster" placeholder="URL Poster Video" /><br><br>
-<input type="text" id="ads_title" placeholder="Judul Iklan" /><br><br>
-<input type="text" id="ads_image" placeholder="URL Gambar Iklan" /><br><br>
-<input type="text" id="ads_url" placeholder="Link Tujuan Iklan" /><br><br>
+  <h3>Tambahan: Poster & Iklan</h3>
+  <input type="text" id="poster" placeholder="URL Poster Video" /><br><br>
+  <input type="text" id="ads_title" placeholder="Judul Iklan" /><br><br>
+  <input type="text" id="ads_image" placeholder="URL Gambar Iklan" /><br><br>
+  <input type="text" id="ads_url" placeholder="Link Tujuan Iklan" /><br><br>
 
   <div class="tab">
     <h2>📄 Embed Code</h2>
     <div class="code-box">
       <textarea id="embedOutput" readonly></textarea>
+      <button class="copy" onclick="copyToClipboard('embedOutput')">📋 Salin Iframe</button>
     </div>
     <p>Preview: <a id="previewLink" href="#" target="_blank">Buka Player</a></p>
   </div>
 
+  <div class="tab">
+    <h2>🔗 Link Player Only</h2>
+    <div class="code-box">
+      <input type="text" id="linkOutput" readonly />
+      <button class="copy" onclick="copyToClipboard('linkOutput')">🔗 Salin Link Player</button>
+    </div>
+  </div>
+
   <script>
-  document.getElementById('generatorForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const player = document.getElementById('player').value;
-    const provider = document.getElementById('provider').value;
-    const format = document.getElementById('format').value;
-    const rawLink = document.getElementById('link').value.trim();
-    const encoded = btoa(rawLink);
-    const domain = 'https://nontonyuk.github.io/player/index.html';
-    
-    const poster = document.getElementById("poster").value.trim();
-    const adsTitle = document.getElementById("ads_title").value.trim();
-    const adsImage = document.getElementById("ads_image").value.trim();
-    const adsUrl = document.getElementById("ads_url").value.trim();
-    
-    let url = `${domain}?player=${player}&provider=${provider}&format=${encodeURIComponent(format)}&link=${encoded}`;
-    
-    if (poster) url += `&poster=${encodeURIComponent(poster)}`;
-    if (adsTitle) url += `&ads_title=${encodeURIComponent(adsTitle)}`;
-    if (adsImage) url += `&ads_image=${encodeURIComponent(adsImage)}`;
-    if (adsUrl) url += `&ads_url=${encodeURIComponent(adsUrl)}`;
+    document.getElementById('generatorForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const player = document.getElementById('player').value;
+      const provider = document.getElementById('provider').value;
+      const format = document.getElementById('format').value;
+      const rawLink = document.getElementById('link').value.trim();
+      const encoded = btoa(rawLink);
+      const domain = 'https://nontonyuk.github.io/player/index.html';
 
-    const iframeCode = `<iframe src="${url}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>`;
-    document.getElementById('embedOutput').value = iframeCode;
-    document.getElementById('previewLink').href = url;
-  });
-</script>
+      const poster = document.getElementById("poster").value.trim();
+      const adsTitle = document.getElementById("ads_title").value.trim();
+      const adsImage = document.getElementById("ads_image").value.trim();
+      const adsUrl = document.getElementById("ads_url").value.trim();
 
+      let url = `${domain}?player=${player}&provider=${provider}&format=${encodeURIComponent(format)}&link=${encoded}`;
+      
+      if (poster) url += `&poster=${encodeURIComponent(poster)}`;
+      if (adsTitle) url += `&ads_title=${encodeURIComponent(adsTitle)}`;
+      if (adsImage) url += `&ads_image=${encodeURIComponent(adsImage)}`;
+      if (adsUrl) url += `&ads_url=${encodeURIComponent(adsUrl)}`;
+
+      const iframeCode = `<iframe src="${url}" width="100%" height="400" frameborder="0" allowfullscreen></iframe>`;
+
+      document.getElementById('embedOutput').value = iframeCode;
+      document.getElementById('linkOutput').value = url;
+      document.getElementById('previewLink').href = url;
+    });
+
+    function copyToClipboard(id) {
+      const el = document.getElementById(id);
+      el.select();
+      el.setSelectionRange(0, 99999); // for mobile
+      document.execCommand("copy");
+      alert("✅ Disalin ke clipboard!");
+    }
+  </script>
 </body>
 </html>
